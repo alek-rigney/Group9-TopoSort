@@ -75,10 +75,50 @@ fun topoSort graph nodeList =
                     in
                         case cycleOpt of
                             SOME cycle => Cycle cycle
-                          | NONE => process rest newStates newStack
+                          | NONE => process rem newStates newStack
                     end
                 else
-                    process rest stateList stack
+                    process rem stateList stack
     in
         process nodeList [] []
     end;
+
+(* Test 1: Acyclic graph *)
+(*
+val g1 = [(1,[2,3]), (2,[5]), (3,[4]), (4,[5]), (5,[])];
+
+topoSort g1 [1,2,3,4,5];
+*)
+(* Expected:
+   Topological order: 1 -> 3 -> 4 -> 2 -> 5
+*)
+
+(* Test 2: Graph with a cycle *)
+(*
+val g4 = [(1,[2]), (2,[3]), (3,[1])];
+
+topoSort g4 [1,2,3];
+*)
+(* Expected:
+   Cycle detected: 1 -> 3 -> 2 -> 1
+*)
+
+(* Test 3: Self-cycle *)
+(*
+val g6 = [(1,[1])];
+
+topoSort g6 [1];
+*)
+(* Expected:
+   Cycle detected: 1 -> 1
+*)
+
+(* Test 4: Empty graph *)
+(*
+val g7 = [];
+
+topoSort g7 [];
+*)
+(* Expected:
+   Topological order: empty list
+*)
